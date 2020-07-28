@@ -9,10 +9,12 @@ import {
 import InfoBox from "./InfoBox";
 import Map from "./Map";
 import "./App.css";
+import { findAllByLabelText } from "@testing-library/react";
 
 function App() {
   const [countries, setCountries] = useState([]);
-  const [country, setCountry] = useState("worldwide");
+  const [country, setCountry] = useState("worldwide"); // set the country in state
+  const [countryInfo, setCountryInfo] = useState({});
 
   useEffect(() => {
     const getCountriesData = async () => {
@@ -30,10 +32,21 @@ function App() {
     getCountriesData();
   }, []);
 
-  const selectCountry = (event) => {
-    const countryCode = event.target.value;
-    console.log(countryCode);
+  const selectCountry = async (e) => {
+    const countryCode = e.target.value;
     setCountry(countryCode);
+
+    const url =
+      countryCode === "worldwide"
+        ? "https://disease.sh/v3/covid-19/all"
+        : `https://disease.sh/v3/covid-19/countries/${countryCode}`;
+    await fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        // All of the data ...
+        // From the country response
+        setCountryInfo(data);
+      });
   };
 
   return (
