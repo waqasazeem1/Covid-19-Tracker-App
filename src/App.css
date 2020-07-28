@@ -3,10 +3,17 @@
   padding: 0;
   box-sizing: border-box;
 }
+body {
+  background-color: #f5f6fa;
+}
 
 .app_header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+}
+
+.app_status {
+  display: flex;
 }

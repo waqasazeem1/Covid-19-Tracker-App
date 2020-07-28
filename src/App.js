@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { MenuItem, Select, FormControl } from "@material-ui/core";
+import InfoBox from "./InfoBox";
+import Map from "./Map";
 import "./App.css";
 
 function App() {
@@ -30,18 +32,30 @@ function App() {
 
   return (
     <div className="app">
-      <div className="app_header">
-        <h1>Covid-19 App</h1>
-        <FormControl className="app_dropdown">
-          <Select variant="outlined" onChange={selectCountry} value={country}>
-            <MenuItem value="worldwide">worldwide</MenuItem>
+      <div className="app_left">
+        <div className="app_header">
+          <h1>Covid-19 App</h1>
+          <FormControl className="app_dropdown">
+            <Select variant="outlined" onChange={selectCountry} value={country}>
+              <MenuItem value="worldwide">worldwide</MenuItem>
 
-            {countries.map((country) => (
-              <MenuItem value={country.value}>{country.name}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+              {countries.map((country) => (
+                <MenuItem value={country.value}>{country.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </div>
+
+        <div className="app_status">
+          <InfoBox title="cronavirus cases" cases={123} total={2000} />
+          <InfoBox title="Recovered" cases={123} total={2000} />
+          <InfoBox title="Deaths" cases={123} total={2000} />
+        </div>
+        <div>
+          <Map />
+        </div>
       </div>
+      <div className="app_right">right</div>
     </div>
   );
 }
