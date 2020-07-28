@@ -22,18 +22,22 @@ function App() {
     getCountriesData();
   }, []);
 
+  const selectCountry = (event) => {
+    const countryCode = event.target.value;
+    console.log(countryCode);
+    setCountry(countryCode);
+  };
+
   return (
     <div className="app">
       <div className="app_header">
         <h1>Covid-19 App</h1>
         <FormControl className="app_dropdown">
-          <Select variant="outlined" value={country}>
+          <Select variant="outlined" onChange={selectCountry} value={country}>
             <MenuItem value="worldwide">worldwide</MenuItem>
 
             {countries.map((country) => (
-              <div key={country.name}>
-                <MenuItem value={country.value}>{country.name}</MenuItem>
-              </div>
+              <MenuItem value={country.value}>{country.name}</MenuItem>
             ))}
           </Select>
         </FormControl>
