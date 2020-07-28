@@ -32,6 +32,14 @@ function App() {
     getCountriesData();
   }, []);
 
+  useEffect(() => {
+    fetch("https://disease.sh/v3/covid-19/all")
+      .then((res) => res.json())
+      .then((data) => {
+        setCountryInfo(data);
+      });
+  }, []);
+
   const selectCountry = async (e) => {
     const countryCode = e.target.value;
     setCountry(countryCode);
@@ -48,6 +56,8 @@ function App() {
         setCountryInfo(data);
       });
   };
+
+  console.log(countryInfo);
 
   return (
     <div className="app">
@@ -66,9 +76,21 @@ function App() {
         </div>
 
         <div className="app_status">
-          <InfoBox title="cronavirus cases" cases={123} total={2000} />
-          <InfoBox title="Recovered" cases={123} total={2000} />
-          <InfoBox title="Deaths" cases={123} total={2000} />
+          <InfoBox
+            title="cronavirus cases"
+            cases={countryInfo.todayCases}
+            total={2000}
+          />
+          <InfoBox
+            title="Recovered"
+            cases={countryInfo.todayRecovered}
+            total={2000}
+          />
+          <InfoBox
+            title="Deaths"
+            cases={countryInfo.todayDeaths}
+            total={2000}
+          />
         </div>
         <div>
           <Map />
