@@ -8,13 +8,14 @@ import {
 } from "@material-ui/core";
 import InfoBox from "./InfoBox";
 import Map from "./Map";
+import CountryTable from "./CountryTable";
 import "./App.css";
-import { findAllByLabelText } from "@testing-library/react";
 
 function App() {
   const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState("worldwide"); // set the country in state
   const [countryInfo, setCountryInfo] = useState({});
+  const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
     const getCountriesData = async () => {
@@ -25,7 +26,8 @@ function App() {
             name: country.country,
             value: country.countryInfo.iso2,
           }));
-          // set in state
+          // set countries in state
+          setTableData(data);
           setCountries(countries);
         });
     };
@@ -57,7 +59,7 @@ function App() {
       });
   };
 
-  console.log(countryInfo);
+  // console.log(countryInfo);
 
   return (
     <div className="app">
@@ -100,6 +102,7 @@ function App() {
       <Card className="app_right">
         <CardContent>
           <h3>Live cases by country</h3>
+          <CountryTable countries={tableData} />
           <h3>Worldwide new cases</h3>
         </CardContent>
       </Card>
