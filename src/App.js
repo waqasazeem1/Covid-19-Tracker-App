@@ -33,7 +33,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetch("https://disease.sh/v3/covid-19/all")
+    fetch("https://disease.sh/v3/covid-19/all") // fetch worldwide data
       .then((res) => res.json())
       .then((data) => {
         setCountryInfo(data);
@@ -79,17 +79,17 @@ function App() {
           <InfoBox
             title="cronavirus cases"
             cases={countryInfo.todayCases}
-            total={2000}
+            total={countryInfo.cases}
           />
           <InfoBox
             title="Recovered"
             cases={countryInfo.todayRecovered}
-            total={2000}
+            total={countryInfo.recovered}
           />
           <InfoBox
             title="Deaths"
             cases={countryInfo.todayDeaths}
-            total={2000}
+            total={countryInfo.deaths}
           />
         </div>
         <div>
