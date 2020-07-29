@@ -9,6 +9,7 @@ import {
 import InfoBox from "./InfoBox";
 import Map from "./Map";
 import CountryTable from "./CountryTable";
+import { sortData } from "./utils";
 import "./App.css";
 
 function App() {
@@ -26,8 +27,10 @@ function App() {
             name: country.country,
             value: country.countryInfo.iso2,
           }));
+
+          const sortedData = sortData(data);
+          setTableData(sortedData);
           // set countries in state
-          setTableData(data);
           setCountries(countries);
         });
     };
