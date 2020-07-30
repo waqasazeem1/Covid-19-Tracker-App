@@ -49,9 +49,8 @@ function App() {
       });
   }, []);
 
-  const selectCountry = async (e) => {
+  const onChangeCountry = async (e) => {
     const countryCode = e.target.value;
-    setCountry(countryCode);
 
     const url =
       countryCode === "worldwide"
@@ -62,7 +61,11 @@ function App() {
       .then((data) => {
         // All of the data ...
         // From the country response
+        setCountry(countryCode);
         setCountryInfo(data);
+
+        setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
+        setMapZoom(4);
       });
   };
 
@@ -74,7 +77,11 @@ function App() {
         <div className="app_header">
           <h1>Covid-19 App</h1>
           <FormControl className="app_dropdown">
-            <Select variant="outlined" onChange={selectCountry} value={country}>
+            <Select
+              variant="outlined"
+              onChange={onChangeCountry}
+              value={country}
+            >
               <MenuItem value="worldwide">worldwide</MenuItem>
 
               {countries.map((country) => (
