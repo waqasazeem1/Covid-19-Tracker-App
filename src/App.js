@@ -22,6 +22,7 @@ function App() {
   const [mapCenter, setMapCenter] = useState({ lat: 34.80746, lng: -40.4796 });
   const [mapZoom, setMapZoom] = useState(3);
   const [mapCountries, setMapCountries] = useState([]);
+  const [caseType, setCaseType] = useState("cases");
 
   useEffect(() => {
     const getCountriesData = async () => {
@@ -95,23 +96,31 @@ function App() {
 
         <div className="app_status">
           <InfoBox
+            onClick={(e) => setCaseType("cases")}
             title="cronavirus cases"
             cases={prettyPrintStat(countryInfo.todayCases)}
             total={countryInfo.cases}
           />
           <InfoBox
+            onClick={(e) => setCaseType("recovered")}
             title="Recovered"
             cases={prettyPrintStat(countryInfo.todayRecovered)}
             total={countryInfo.recovered}
           />
           <InfoBox
+            onClick={(e) => setCaseType("deaths")}
             title="Deaths"
             cases={prettyPrintStat(countryInfo.todayDeaths)}
             total={countryInfo.deaths}
           />
         </div>
         <div>
-          <Map countries={mapCountries} center={mapCenter} zoom={mapZoom} />
+          <Map
+            casesType={caseType}
+            countries={mapCountries}
+            center={mapCenter}
+            zoom={mapZoom}
+          />
         </div>
       </div>
 
