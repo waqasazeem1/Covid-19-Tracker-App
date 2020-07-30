@@ -41,6 +41,10 @@ export const sortData = (data) => {
   //   return sortedData;
 };
 
+export const prettyPrintStat = (stat) => {
+  return stat ? `+${numeral(stat).format("0.0a")}` : "+0";
+};
+
 //Draw circles on the map with interactive tooltip
 export const showDataOnMap = (data, caseType = "cases") =>
   data.map((country) => (
