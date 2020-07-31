@@ -47,32 +47,54 @@ const options = {
   },
 };
 
-const BuildChartData = (data, caseType) => {
-  const chartData = [];
-  let lastDataPoint;
-
-  for (let date in data.cases) {
-    if (lastDataPoint) {
-      let newDataPoint = {
-        x: date,
-        y: data[caseType][date] - lastDataPoint,
-      };
-      chartData.push(newDataPoint);
-    }
-    lastDataPoint = data[caseType][date];
-  }
-  return chartData;
+const casesTypeColors = {
+  cases: {
+    hex: "#CC1034",
+    // rgb: "rgb(204, 16, 52)",
+    half_op: "rgba(204,16, 52, 0.5)",
+    multiplier: 800,
+  },
+  recovered: {
+    hex: "#7dd71d",
+    // rgb: "rgb(125, 215, 29)",
+    half_op: "rgba(125, 215, 29, 0.5)",
+    multiplier: 1200,
+  },
+  deaths: {
+    hex: "#fb4443",
+    // rgb: "rgb(251, 68, 67)",
+    half_op: "rgba(251, 68, 67, 0.5)",
+    multiplier: 200,
+  },
 };
-function LineGraph({ caseType = "cases" }) {
+
+function LineGraph({ caseType = "cases", ...props }) {
   const [data, setData] = useState({});
+
+  const BuildChartData = (data) => {
+    const chartData = [];
+    let lastDataPoint;
+
+    for (let date in data.cases) {
+      if (lastDataPoint) {
+        const newDataPoint = {
+          x: date,
+          y: data[caseType][date] - lastDataPoint,
+        };
+        chartData.push(newDataPoint);
+      }
+      lastDataPoint = data[caseType][date];
+    }
+    return chartData;
+  };
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=150")
+      await fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=120")
         .then((res) => res.json())
         .then((data) => {
           // console.log(data);
-          let chartData = BuildChartData(data, caseType);
+          const chartData = BuildChartData(data);
           setData(chartData);
         });
     };
@@ -87,7 +109,9 @@ function LineGraph({ caseType = "cases" }) {
           data={{
             datasets: [
               {
-                backgroundColor: "rgba(75,192,192,0.4)",
+                backgroundColor: casesTypeColors[caseType].half_op,
+                borderColor: casesTypeColors[caseType].hex,
+
                 data: data,
               },
             ],

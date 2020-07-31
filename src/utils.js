@@ -19,8 +19,12 @@ const casesTypeColors = {
     hex: "#fb4443",
     // rgb: "rgb(251, 68, 67)",
     // half_op: "rgba(251, 68, 67, 0.5)",
-    multiplier: 2000,
+    multiplier: 200,
   },
+};
+
+export const prettyPrintStat = (stat) => {
+  return stat ? `${numeral(stat).format("0.0a")}` : "+0";
 };
 
 export const sortData = (data) => {
@@ -39,10 +43,6 @@ export const sortData = (data) => {
   //     }
   //   });
   //   return sortedData;
-};
-
-export const prettyPrintStat = (stat) => {
-  return stat ? `+${numeral(stat).format("0.0a")}` : "+0";
 };
 
 //Draw circles on the map with interactive tooltip

@@ -16,8 +16,12 @@
 .infoBox_selected {
   border-top: 10px solid greenyellow;
 }
+.info_green {
+  color: yellowgreen;
+}
 .infoBox_red {
   border-color: red;
+  color: red;
 }
 .infoBox_total {
   color: #6c757d;

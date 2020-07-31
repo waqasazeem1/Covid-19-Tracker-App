@@ -19,10 +19,18 @@ function App() {
   const [country, setCountry] = useState("worldwide"); // set the country in state
   const [countryInfo, setCountryInfo] = useState({});
   const [tableData, setTableData] = useState([]);
-  const [mapCenter, setMapCenter] = useState({ lat: 34.80746, lng: -40.4796 });
-  const [mapZoom, setMapZoom] = useState(3);
+  const [mapCenter, setMapCenter] = useState({ lat: 34.8076, lng: -40.4796 });
+  const [mapZoom, setMapZoom] = useState(2);
   const [mapCountries, setMapCountries] = useState([]);
   const [caseType, setCaseType] = useState("cases");
+
+  useEffect(() => {
+    fetch("https://disease.sh/v3/covid-19/all") // fetch worldwide data
+      .then((res) => res.json())
+      .then((data) => {
+        setCountryInfo(data);
+      });
+  }, []);
 
   useEffect(() => {
     const getCountriesData = async () => {
@@ -44,14 +52,6 @@ function App() {
     getCountriesData();
   }, []);
 
-  useEffect(() => {
-    fetch("https://disease.sh/v3/covid-19/all") // fetch worldwide data
-      .then((res) => res.json())
-      .then((data) => {
-        setCountryInfo(data);
-      });
-  }, []);
-
   const onChangeCountry = async (e) => {
     const countryCode = e.target.value;
 
@@ -59,16 +59,22 @@ function App() {
       countryCode === "worldwide"
         ? "https://disease.sh/v3/covid-19/all"
         : `https://disease.sh/v3/covid-19/countries/${countryCode}`;
+
     await fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        // All of the data ...
+        // All of the data ..
+        // console.log(data.countryInfo);
         // From the country response
         setCountry(countryCode);
         setCountryInfo(data);
-
-        setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
-        setMapZoom(4);
+        if (countryCode === "worldwide") {
+          setMapCenter(mapCenter);
+          setMapZoom(3);
+        } else {
+          setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
+          setMapZoom(4);
+        }
       });
   };
 
@@ -101,14 +107,15 @@ function App() {
             onClick={(e) => setCaseType("cases")}
             title="cronavirus cases"
             cases={prettyPrintStat(countryInfo.todayCases)}
-            total={countryInfo.cases}
+            total={prettyPrintStat(countryInfo.cases) + " Total"}
           />
           <InfoBox
+            isGreen
             active={caseType === "recovered"}
             onClick={(e) => setCaseType("recovered")}
             title="Recovered"
             cases={prettyPrintStat(countryInfo.todayRecovered)}
-            total={countryInfo.recovered}
+            total={prettyPrintStat(countryInfo.recovered) + " Total"}
           />
           <InfoBox
             isRed
@@ -116,7 +123,7 @@ function App() {
             onClick={(e) => setCaseType("deaths")}
             title="Deaths"
             cases={prettyPrintStat(countryInfo.todayDeaths)}
-            total={countryInfo.deaths}
+            total={prettyPrintStat(countryInfo.deaths) + " Total"}
           />
         </div>
         <div>
@@ -134,7 +141,7 @@ function App() {
           <h3>Live cases by country</h3>
           <CountryTable countries={tableData} />
           <h3>Worldwide new {caseType}</h3>
-          <LineGraph caseType={caseType} />
+          <LineGraph className="app_graph" caseType={caseType} />
         </CardContent>
       </Card>
     </div>
